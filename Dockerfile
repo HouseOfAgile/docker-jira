@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.8
+FROM phusion/baseimage:0.9.12
 
 MAINTAINER Meillaud Jean-Christophe (jc.meillaud@gmail.com)
 
@@ -21,6 +21,14 @@ RUN mkdir /srv/www
 # Install Jira
 ADD install-jira.sh /root/
 RUN /root/install-jira.sh
+## Install SSH for a specific user (thanks to public key)
+ADD ./config/id_rsa.pub /tmp/your_key
+RUN cat /tmp/your_key >> /root/.ssh/authorized_keys && rm -f /tmp/your_key
+
+# Add private key in order to get access to private repo
+ADD ./config/id_rsa /root/.ssh/id_rsa
+
+
 
 # Launching Jira
 WORKDIR /opt/jira-home
