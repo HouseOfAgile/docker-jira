@@ -7,7 +7,7 @@ Simple Docker container for Atlassian JIRA based on phusions ubuntu base-image (
 
     sudo docker build -t="houseofagile/docker-jira" .
  
- ## Run your JIRA docker instance
+## Run your JIRA docker instance
  
     sudo docker run -d --name docker-jira -P houseofagile/docker-jira
     
@@ -29,7 +29,7 @@ f3d8d346264c    beaudev/scripter:latest 172.17.0.19
 e27873454be2    mypostgre/postgresql:latest     172.17.0.88
 cf99a3496f47    docker-wordpress-nginx-fr:latest        172.17.0.89
 ```
-### add a nginx vhost proxy
+### Add a nginx vhost proxy
 Once again, thanks to some [useful nginx proxy creation script](https://gist.github.com/jmeyo/0c241bbdc3c1c4df57bf), you can add a vhost to your container easily.
 
 ```
