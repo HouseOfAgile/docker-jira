@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-JIRA_VERSION=6.2
+JIRA_VERSION=6.4
 
 tmpfile=$(mktemp)
 
