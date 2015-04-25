@@ -41,4 +41,4 @@ Restarting nginx: nginx.
 
 ## Using latest version of JIRA
 
-We are big fans of JIRA, but indeed, that tool could become a bit expensive, thus we are stuck to version 6.2, but you can easily switch to latest version by changing the JIRA version in `install-jira.sh` (tested with [latest released version 6.3.3](https://confluence.atlassian.com/display/JIRA/JIRA+Release+Summary)).
+We are big fans of JIRA, but indeed, that tool could become a bit expensive, thus we are stuck to version 6.4, but you can easily switch to latest version by changing the JIRA version in `install-jira.sh` (last tested with [latest released version 6.3.3](https://confluence.atlassian.com/display/JIRA/JIRA+Release+Summary)).
