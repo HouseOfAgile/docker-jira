@@ -11,7 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -q -y python-software-propert
 RUN DEBIAN_FRONTEND=noninteractive apt-add-repository ppa:webupd8team/java -y
 
 RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractiveapt-get update &&  apt-get install oracle-java7-installer -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install oracle-java7-installer -y
 
 RUN mkdir /srv/www
 
