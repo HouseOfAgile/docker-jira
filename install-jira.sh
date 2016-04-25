@@ -1,10 +1,9 @@
 #!/bin/bash -x
 
-JIRA_VERSION=6.4
+JIRA_VERSION=7.1.4
 
 tmpfile=$(mktemp)
-
-curl -LSs http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${JIRA_VERSION}.tar.gz -o $tmpfile
+curl -LSs https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${JIRA_VERSION}-jira-${JIRA_VERSION}.tar.gz -o $tmpfile
 mkdir -p /opt/jira
 tar zxf $tmpfile --strip=1 -C /opt/jira
 
