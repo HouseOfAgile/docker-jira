@@ -3,7 +3,7 @@
 JIRA_VERSION=7.1.9
 
 tmpfile=$(mktemp)
-curl -LSs https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${JIRA_VERSION}-jira-${JIRA_VERSION}.tar.gz -o $tmpfile
+curl -LSs https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${JIRA_VERSION}.tar.gz -o $tmpfile
 mkdir -p /opt/jira
 tar zxf $tmpfile --strip=1 -C /opt/jira
 
