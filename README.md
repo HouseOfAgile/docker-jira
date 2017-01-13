@@ -86,6 +86,37 @@ Small summary guidelines:
  6. your new jira server should be now running the new version of JIRA
  7. stop your new jira server, switch jira site url from your temp domain to your prod domain and restart your new jira server.
 
+## Troubleshooting
+
+### Enable SSL for JIRA
+Using jira in a docker behind a proxy with ssl support could be painful, in a classic traefik environment, your https traffic is also sent to your backend, but then JIRA could be lost.
+First switch your jira site scheme in the jira system to https and then edit /opt/jira/conf/server.xml. 
+
+
+    [...]
+    <Service name="Catalina">
+
+        <Connector port="8080"
+
+                   maxThreads="150"
+                   minSpareThreads="25"
+                   connectionTimeout="20000"
+                   
+                   <!-- Add those 3 lines with your jira domain name -->
+                   scheme="https"
+                   proxyName="jira.somedomain.com"
+                   proxyPort="443"
+                   <!-- end -->
+
+                   enableLookups="false"
+                   maxHttpHeaderSize="8192"
+                   protocol="HTTP/1.1"
+                   useBodyEncodingForURI="true"
+                   redirectPort="8443"
+                   acceptCount="100"
+                   disableUploadTimeout="true"
+                   bindOnInit="false"/>
+    [...]
 
 
 
