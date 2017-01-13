@@ -5,11 +5,17 @@ Simple Docker container for Atlassian JIRA based on phusions ubuntu base-image (
 
 ## Build Docker JIRA instance
 
+In order to connect with ssh, you should add your ssh keys in a ```config/``` directory. Then you can build it.
+
     sudo docker build -t="houseofagile/docker-jira" .
  
 ## Run your JIRA docker instance
  
     sudo docker run -d --name docker-jira -P houseofagile/docker-jira
+    
+It could be nice to link jira with your mysql instance and to mount your jira-home as a volume
+
+    hoa_instance=jira-prod-staropramen && docker run -d -h $hoa_instance --name $hoa_instance --link staropramen-mysql:heypet-mysql -v /srv/volumes/jira-prod:/opt/jira-home houseofagile/docker-jira
     
 
 ## Add a vhost on your docker root host
@@ -29,7 +35,9 @@ f3d8d346264c    beaudev/scripter:latest 172.17.0.19
 e27873454be2    mypostgre/postgresql:latest     172.17.0.88
 cf99a3496f47    docker-wordpress-nginx-fr:latest        172.17.0.89
 ```
-### Add a nginx vhost proxy
+
+## Access your JIRA install
+### Simple nginx vhost proxy
 Once again, thanks to some [useful nginx proxy creation script](https://gist.github.com/jmeyo/0c241bbdc3c1c4df57bf), you can add a vhost to your container easily.
 
 ```
@@ -38,7 +46,46 @@ Updating proxy for host: jira.somedomainname.com
 Restarting nginx: nginx.
 
 ```
+### Use it with [jwilder nginx proxy](https://github.com/jwilder/nginx-proxy)
 
-## Using latest version of JIRA
+    PROJECT_NAME=”hoa-jira-prod”
+    DOMAIN_NAMES=”jira.somedomainname.com”
 
-We are big fans of JIRA, but indeed, that tool could become a bit expensive, thus we are stuck to version 6.4, but you can easily switch to latest version by changing the JIRA version in `install-jira.sh` (last tested with [latest released version 6.4](https://confluence.atlassian.com/display/JIRA/JIRA+Release+Summary)).
+    docker run -e VIRTUAL_HOST="$DOMAIN_NAMES" -e LETSENCRYPT_HOST="$DOMAIN_NAMES" -e LETSENCRYPT_EMAIL="jc@houseofagile.com" -h $PROJECT_NAME   -v /srv/volumes/jira-prod:/opt/jira-home --name $PROJECT_NAME -d -P houseofagile/docker-jira
+
+### Use it with [traefik](https://github.com/containous/traefik)
+
+Find the private IP of your docker instance (for example 172.17.0.4 here) and configure your toml file.
+
+    # example configuration
+    [backends]
+    [backends.jira]
+    [backends.jira.servers.server1]
+    url = "http://172.17.0.4:8080"
+
+    [frontends]
+
+    [frontends.jira]
+    backend = "jira"
+    passHostHeader = true
+    [frontends.jira.routes.main]
+    rule = "Host: jira-new.somedomainname.com, jira.somedomainname.com"
+
+
+## Upgrading to latest version of JIRA
+
+Recommended way could be to deploy it into another subdomain, work on the [migration](https://confluence.atlassian.com/adminjiraserver073/migrating-jira-applications-to-another-server-861253107.html) and switch it to your production version. Stopping production version first is recommended so that your user do not update the db.
+
+Small summary guidelines:
+
+ 1. backup system with your current production server and stop current production server
+ 2. build new version and configure access to a new temp domain
+ 3. run your new docker instance without jira-home volume and do a fresh install with your new temp domain
+ 4. stop your new docker instance and mount it with your jira-home directory mounted as a volume
+ 5. start new docker instance and restore system with your backup
+ 6. your new jira server should be now running the new version of JIRA
+ 7. stop your new jira server, switch jira site url from your temp domain to your prod domain and restart your new jira server.
+
+
+
+
