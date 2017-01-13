@@ -5,17 +5,12 @@ MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
 ENV JAVA_VERSION 8
 ENV MYSQL_CONNECTOR_VERSION 5.1.36
 
-RUN apt-get update && apt-get install -q -y git-core 
 # Install Java 8
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -q -y software-properties-common
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -q -y python-software-properties
-RUN DEBIAN_FRONTEND=noninteractive apt-add-repository ppa:webupd8team/java -y
-
-RUN echo oracle-java${JAVA_VERSION}-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-RUN DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install oracle-java${JAVA_VERSION}-installer -y
-
-RUN mkdir /srv/www
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -q -y git-core software-properties-common python-software-properties && \
+  apt-add-repository ppa:webupd8team/java -y && \
+  echo oracle-java${JAVA_VERSION}-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+  DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install oracle-java${JAVA_VERSION}-installer -y && \
+  mkdir /srv/www
 
 # Install Jira
 ADD install-jira.sh /root/
@@ -33,9 +28,9 @@ WORKDIR /opt/jira-home
 RUN rm -f /opt/jira-home/.jira-home.lock
 
 # Add mysql driver
-RUN curl -sSL http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.tar.gz -o /tmp/mysql-connector-java.tar.gz
-RUN tar xzf /tmp/mysql-connector-java.tar.gz -C /tmp
-RUN cp /tmp/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar /opt/jira/lib/
+RUN curl -sSL http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.tar.gz -o /tmp/mysql-connector-java.tar.gz && \
+  tar xzf /tmp/mysql-connector-java.tar.gz -C /tmp && \
+  cp /tmp/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}-bin.jar /opt/jira/lib/
 
 # Add start script in my_init.d of phusion baseimage
 RUN mkdir -p /etc/my_init.d
