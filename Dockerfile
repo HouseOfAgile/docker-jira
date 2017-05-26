@@ -12,16 +12,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -q -y git-c
   DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install oracle-java${JAVA_VERSION}-installer -y && \
   mkdir /srv/www
 
+ADD ./config/ssh-keys /root/ssh-keys
+
 # Install Jira
 ADD install-jira.sh /root/
 RUN /root/install-jira.sh
-
-## Install SSH for a specific user (thanks to public key)
-ADD ./config/id_rsa.pub /tmp/your_key
-RUN cat /tmp/your_key >> /root/.ssh/authorized_keys && rm -f /tmp/your_key
-
-# Add private key in order to get access to private repo
-ADD ./config/id_rsa /root/.ssh/id_rsa
 
 # Launching Jira
 WORKDIR /opt/jira-home
@@ -34,6 +29,7 @@ RUN curl -sSL http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-jav
 
 # Add start script in my_init.d of phusion baseimage
 RUN mkdir -p /etc/my_init.d
+ADD ./setup-server.sh /etc/my_init.d/setup-server.sh
 ADD ./start-jira.sh /etc/my_init.d/start-jira.sh
 
 CMD  ["/sbin/my_init"]
