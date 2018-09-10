@@ -6,7 +6,7 @@ ENV JAVA_VERSION 8
 ENV MYSQL_CONNECTOR_VERSION 5.1.36
 
 # Install Java 8
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -q -y git-core software-properties-common python-software-properties && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -q -y git-core software-properties-common && \
   apt-add-repository ppa:webupd8team/java -y && \
   echo oracle-java${JAVA_VERSION}-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   DEBIAN_FRONTEND=noninteractive apt-get update &&  apt-get install oracle-java${JAVA_VERSION}-installer -y && \
