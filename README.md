@@ -7,16 +7,16 @@ Simple Docker container for Atlassian JIRA based on phusions ubuntu base-image (
 
 In order to connect with ssh, you should add your ssh keys in a ```config/``` directory. Then you can build it.
 
-    sudo docker build -t="houseofagile/docker-jira" .
- 
+    docker build -t="houseofagile/docker-jira" .
+
 ## Run your JIRA docker instance
- 
-    sudo docker run -d --name docker-jira -P houseofagile/docker-jira
-    
+
+    docker run -d --name docker-jira -P houseofagile/docker-jira
+
 It could be nice to link jira with your mysql instance and to mount your jira-home as a volume
 
     hoa_instance=jira-prod-staropramen && docker run -d -h $hoa_instance --name $hoa_instance --link staropramen-mysql:heypet-mysql -v /srv/volumes/jira-prod:/opt/jira-home houseofagile/docker-jira
-    
+
 
 ## Add a vhost on your docker root host
 
@@ -27,7 +27,7 @@ The JIRA docker instance should run smoothly in the background, thanks to phusio
 Use either docker ps or [some useful script](https://gist.github.com/jmeyo/fface4f606ae6bf5365c)
 
 ```
-user@someserver:~$ do_get_ip_address 
+user@someserver:~$ do_get_ip_address
 63d0c34992e4    houseofagile/docker-jira:latest 172.17.0.122
 de06f34dcf38    beaudev/mysql:latest    172.17.0.124
 347ad346baa3    beaudev/docker-nginx:latest     172.17.0.101
@@ -90,7 +90,7 @@ Small summary guidelines:
 
 ### Enable SSL for JIRA
 Using jira in a docker behind a proxy with ssl support could be painful, in a classic traefik environment, your https traffic is also sent to your backend, but then JIRA could be lost.
-First switch your jira site scheme in the jira system to https and then edit /opt/jira/conf/server.xml. 
+First switch your jira site scheme in the jira system to https and then edit /opt/jira/conf/server.xml.
 
 
     [...]
@@ -101,7 +101,7 @@ First switch your jira site scheme in the jira system to https and then edit /op
                    maxThreads="150"
                    minSpareThreads="25"
                    connectionTimeout="20000"
-                   
+
                    <!-- Add those 3 lines with your jira domain name -->
                    scheme="https"
                    proxyName="jira.somedomain.com"
@@ -117,6 +117,3 @@ First switch your jira site scheme in the jira system to https and then edit /op
                    disableUploadTimeout="true"
                    bindOnInit="false"/>
     [...]
-
-
-
