@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.19
+FROM phusion/baseimage:0.11
 EXPOSE 8080
 
 MAINTAINER Meillaud Jean-Christophe (jc@houseofagile.com)
