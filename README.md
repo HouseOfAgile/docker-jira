@@ -69,7 +69,7 @@ Find the private IP of your docker instance (for example 172.17.0.4 here) and co
     backend = "jira"
     passHostHeader = true
     [frontends.jira.routes.main]
-    rule = "Host: jira-new.somedomainname.com, jira.somedomainname.com"
+    rule = "Host: jira.somedomainname.com, jira-alias.somedomainname.com"
 
 
 ## Upgrading to latest version of JIRA
@@ -90,7 +90,7 @@ Small summary guidelines:
 
 ### Enable SSL for JIRA
 Using jira in a docker behind a proxy with ssl support could be painful, in a classic traefik environment, your https traffic is also sent to your backend, but then JIRA could be lost.
-First switch your jira site scheme in the jira system to https and then edit /opt/jira/conf/server.xml.
+First switch your jira site scheme in the jira system to https and then edit /opt/jira/conf/server.xml in the container.
 
 
     [...]

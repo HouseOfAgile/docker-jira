@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cd /opt/jira/bin
-./start-jira.sh
+cd /opt/jira/bin && ./start-jira.sh
